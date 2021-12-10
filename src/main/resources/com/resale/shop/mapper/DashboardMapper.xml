@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resale.shop.mapper.DashboardMapper">
+    <select id="getTotalCategorycnt" resultType="java.lang.Integer">
+        select count(*) from goods_category
+    </select>
+    <select id="getTotalGoodscnt" resultType="java.lang.Integer">
+        select count(*) from goods_info
+    </select>
+    <select id="getTotalCustomercnt" resultType="java.lang.Integer">
+        select count(*) from buyer_info
+    </select>
+    <select id="getPlatinumCustomercnt" resultType="java.lang.Integer">
+        select count(*) from buyer_info where bi_grade=4
+    </select>
+    <select id="getGoldtomercnt" resultType="java.lang.Integer">
+        select count(*) from buyer_info where bi_grade=3
+    </select>
+    <select id="getSilevrCustomercnt" resultType="java.lang.Integer">
+        select count(*) from buyer_info where bi_grade=2
+    </select>
+    <select id="getNormalCustomercnt" resultType="java.lang.Integer">
+        select count(*) from buyer_info where bi_grade=1
+    </select>
+    <select id="getTotalReviewcnt" resultType="java.lang.Integer">
+        select count(*) from goods_review
+    </select>
+</mapper>
