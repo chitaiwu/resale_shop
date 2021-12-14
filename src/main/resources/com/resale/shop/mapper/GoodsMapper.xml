@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resale.shop.mapper.GoodsMapper">
+    <select id="selectGoodsAll" resultType="com.resale.shop.data.GoodsVO">
+        select * from goods_info where gi_name like #{keyword}
+        order by gi_seq desc
+        limit 10 offset #{offset}
+    </select>
+    <select id="getGoodsCount" resultType="java.lang.Integer">
+        select count(*) from goods_info where gi_name like #{keyword}
+    </select>
+    <insert id="addGoods">
+        insert into goods_info(gi_gc_seq, gi_name, gi_sub, gi_price, gi_stock)
+        values(#{gi_gc_seq}, #{gi_name}, #{gi_sub}, #{gi_price}, #{gi_stock})
+    </insert>
+    <delete id="deleteGoods">
+        delete from goods_info where gi_seq=#{seq}
+    </delete>
+    <select id="getGoodsInfoBySeq" resultType="com.resale.shop.data.GoodsVO">
+        select * from goods_info where gi_seq=#{seq}
+    </select>
+    <update id="updateGoods">
+        update goods_info
+        set gi_gc_seq=#{gi_gc_seq}, gi_name=#{gi_name}, gi_sub=#{gi_sub},
+        gi_price=#{gi_price}, gi_stock=#{gi_stock}, gi_mod_dt=NOW()
+        where gi_seq=#{gi_seq}
+    </update>
+</mapper>
