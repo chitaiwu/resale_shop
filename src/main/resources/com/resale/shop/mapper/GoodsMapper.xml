@@ -27,4 +27,12 @@
         gi_price=#{gi_price}, gi_stock=#{gi_stock}, gi_mod_dt=NOW()
         where gi_seq=#{gi_seq}
     </update>
+    <select id="selectLatestDataSeq" resultType="java.lang.Integer">
+        select gi_seq from goods_info
+        order by gi_seq desc limit 1
+    </select>
+    <insert id="insertGoodsHistory">
+        insert into mall_db.goods_history(goh_type, goh_content, goh_gi_seq)
+        values (#{goh_type}, #{goh_content}, #{goh_gi_seq})
+    </insert>
 </mapper>

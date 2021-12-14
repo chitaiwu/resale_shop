@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.resale.shop.data.GoodsHistoryVO;
 import com.resale.shop.data.GoodsVO;
 import com.resale.shop.mapper.GoodsMapper;
 
@@ -63,6 +64,16 @@ public class GoodsService {
         mapper.addGoods(data);
         resultMap.put("status", true);
         resultMap.put("message", "제품이 추가되었습니다.");
+        // 가장 최근에 추가된 학과의 seq 번호 가져오기
+        Integer seq = mapper.selectLatestDataSeq();
+        // add 동작에 대한 History 추가
+        GoodsHistoryVO history = new GoodsHistoryVO();
+        history.setGoh_gi_seq(seq);
+        history.setGoh_type("new");
+        String content = data.getGi_gc_seq()+"|"+data.getGi_name()+"|"+data.getGi_price()+"|"+data.getGi_stock();
+        history.setGoh_content(content);
+        mapper.insertGoodsHistory(history);
+
         return resultMap;
     }
     public Map<String, Object> deleteGoods(Integer seq) {
@@ -70,6 +81,14 @@ public class GoodsService {
         mapper.deleteGoods(seq);
         resultMap.put("status", true);
         resultMap.put("message", "제품이 삭제되었습니다.");
+
+        GoodsHistoryVO history = new GoodsHistoryVO();
+        history.setGoh_gi_seq(seq);
+        history.setGoh_type("delete");
+        // String content = data.getGi_gc_seq()+"|"+data.getGi_name()+"|"+data.getGi_price()+"|"+data.getGi_stock();
+        // history.setGoh_content(content);
+        mapper.insertGoodsHistory(history);
+        
         return resultMap;
     }
     public Map<String, Object> getGoodsInfoBySeq(Integer seq) {
@@ -83,6 +102,14 @@ public class GoodsService {
         mapper.updateGoods(data);
         resultMap.put("status", true);
         resultMap.put("message", "수정되었습니다.");
+
+        GoodsHistoryVO history = new GoodsHistoryVO();
+        history.setGoh_gi_seq(data.getGi_seq());
+        history.setGoh_type("update");
+        String content = data.getGi_gc_seq()+"|"+data.getGi_name()+"|"+data.getGi_price()+"|"+data.getGi_stock();
+        history.setGoh_content(content);
+        mapper.insertGoodsHistory(history);
+
         return resultMap;
     }
 }

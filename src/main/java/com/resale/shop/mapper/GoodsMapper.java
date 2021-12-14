@@ -2,6 +2,7 @@ package com.resale.shop.mapper;
 
 import java.util.List;
 
+import com.resale.shop.data.GoodsHistoryVO;
 import com.resale.shop.data.GoodsVO;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -15,4 +16,7 @@ public interface GoodsMapper {
 
     public GoodsVO getGoodsInfoBySeq(Integer seq);
     public void updateGoods(GoodsVO data);
+
+    public Integer selectLatestDataSeq();
+    public void insertGoodsHistory(GoodsHistoryVO data);
 }
