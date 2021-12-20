@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.resale.shop.data.BrandVO;
 import com.resale.shop.data.GoodsHistoryVO;
 import com.resale.shop.data.GoodsVO;
 import com.resale.shop.mapper.GoodsMapper;
@@ -110,6 +111,15 @@ public class GoodsService {
         history.setGoh_content(content);
         mapper.insertGoodsHistory(history);
 
+        return resultMap;
+    }
+    public Map<String, Object> getBrandByKeyword(String keyword) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        if(keyword == null) keyword = "%%";
+        keyword = "%"+keyword+"%";
+        List<BrandVO> list = mapper.getBrandByKeyword(keyword);
+        resultMap.put("status", true);
+        resultMap.put("list", list);
         return resultMap;
     }
 }

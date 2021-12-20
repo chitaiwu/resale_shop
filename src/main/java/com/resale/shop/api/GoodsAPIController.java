@@ -6,6 +6,7 @@ import com.resale.shop.data.GoodsVO;
 import com.resale.shop.service.GoodsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,5 +33,9 @@ public class GoodsAPIController {
     @PatchMapping("/goods/update")
     public Map<String, Object> patchDepartmentInfo(@RequestBody GoodsVO data) {
         return service.updateGoodsInfo(data);
+    }
+    @GetMapping("/goods/keyword")
+    public Map<String, Object> getGoodsByKeyword(@RequestParam @Nullable String keyword) {
+        return service.getBrandByKeyword(keyword);
     }
 }

@@ -16,18 +16,20 @@
 <body>
     <header>
         <div class="menu_wrap">
-            <div class="manager_menu">
+            <div class="user_menu">
                 <a href="#" id="profile_img">
                     <img src="http://placekitten.com/100/100">
                     <span>수정하기</span>
                 </a>
-                <a href="#" id="manager_name">관리자(admin)</a>
+                <a href="#" id="user_name">관리자(admin)</a>
                 <a href="#" id="logout"><i class="fas fa-sign-out-alt"></i>로그아웃</a>
             </div>
             <div class="main_menu">
-                <a href="#"><i class="fas fa-shopping-bag"></i>제품 관리</a>
+                <a href="/"><i class="fas fa-columns"></i> 대시보드</a>
+                <a href="/goods"><i class="fas fa-shopping-bag"></i>제품 관리</a>
                 <a href="#"><i class="fas fa-id-card-alt"></i>고객 관리</a>
                 <a href="#"><i class="fas fa-comments"></i>후기 관리</a>
+                <a href="#"><i class=""></i>셀러 관리</a>
             </div>
         </div>
     </header>

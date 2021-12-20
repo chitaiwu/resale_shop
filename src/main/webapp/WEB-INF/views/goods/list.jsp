@@ -48,7 +48,7 @@
                         <c:forEach items="${data.list}" var="g">
                             <tr>
                                 <td>${g.gi_seq}</td>
-                                <td>${g.gi_gc_seq}</td>
+                                <td>${g.category_name}</td>
                                 <td>${g.gi_name}</td>
                                 <td>${g.gi_sub}</td>
                                 <td>${g.gi_price}</td>
@@ -85,6 +85,9 @@
                 <p>제품 정보를 입력해주세요</p>
             </div>
             <div class="content_area">
+                <input type="text" id="brand_name" placeholder="브랜드 명" disabled>
+                <button id="search_br">브랜드 검색</button>
+                <br>
                 <select id="go_category">
                     <option value="1">남성가방</option>
                     <option value="2">여성가방</option>
@@ -103,6 +106,20 @@
                 <button id="modify_go">수정하기</button>
                 <button id="cancel_go">취소하기</button>
             </div>
+        </div>
+    </div>
+    <div class="brand_search">
+        <div class="br_search_box">
+            <input type="text" id="br_keyword" placeholder="예) 샤넬, 에르메스">
+            <button id="br_search_btn"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="search_result">
+            <ul>
+
+            </ul>
+        </div>
+        <div class="br_search_buttons">
+            <button id="br_search_close">닫기</button>
         </div>
     </div>
 </body>

@@ -4,7 +4,13 @@
 
 <mapper namespace="com.resale.shop.mapper.GoodsMapper">
     <select id="selectGoodsAll" resultType="com.resale.shop.data.GoodsVO">
-        select * from goods_info where gi_name like #{keyword}
+        select * from
+        (
+        select a.*, b.gc_name as category_name
+        from goods_info a left outer join goods_category b
+        on a.gi_gc_seq = b.gc_seq
+        ) c 
+        where gi_name like #{keyword}
         order by gi_seq desc
         limit 10 offset #{offset}
     </select>
@@ -12,8 +18,8 @@
         select count(*) from goods_info where gi_name like #{keyword}
     </select>
     <insert id="addGoods">
-        insert into goods_info(gi_gc_seq, gi_name, gi_sub, gi_price, gi_stock)
-        values(#{gi_gc_seq}, #{gi_name}, #{gi_sub}, #{gi_price}, #{gi_stock})
+        insert into goods_info(gi_bi_seq, gi_gc_seq, gi_name, gi_sub, gi_price, gi_stock)
+        values(#{gi_bi_seq}, #{gi_gc_seq}, #{gi_name}, #{gi_sub}, #{gi_price}, #{gi_stock})
     </insert>
     <delete id="deleteGoods">
         delete from goods_info where gi_seq=#{seq}
@@ -23,7 +29,7 @@
     </select>
     <update id="updateGoods">
         update goods_info
-        set gi_gc_seq=#{gi_gc_seq}, gi_name=#{gi_name}, gi_sub=#{gi_sub},
+        set gi_bi_seq=#{gi_bi_seq},gi_gc_seq=#{gi_gc_seq}, gi_name=#{gi_name}, gi_sub=#{gi_sub},
         gi_price=#{gi_price}, gi_stock=#{gi_stock}, gi_mod_dt=NOW()
         where gi_seq=#{gi_seq}
     </update>
@@ -35,4 +41,8 @@
         insert into mall_db.goods_history(goh_type, goh_content, goh_gi_seq)
         values (#{goh_type}, #{goh_content}, #{goh_gi_seq})
     </insert>
+    <select id="getBrandByKeyword" resultType="com.resale.shop.data.BrandVO">
+        select bi_seq, bi_name from brand_info
+        where bi_name like #{keyword}
+    </select>
 </mapper>

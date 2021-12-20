@@ -1,9 +1,9 @@
 // goods.js
 $(function(){
-    $(".main_menu a:nth-child(1)").addClass("active");
+    $(".main_menu a:nth-child(2)").addClass("active");
     // 헤더에 현재 위치 알려준다.
     $("#add_goods").click(function(){
-        // alert("학과 추가 팝업 열기")
+        // alert("제품 추가 팝업 열기")
         $(".popup_wrap").addClass("open");
         $("#add_go").css("display", "inline-block");
         $("#modify_go").css("display", "none");
@@ -12,6 +12,7 @@ $(function(){
     })
     $("#add_go").click(function(){
         if(confirm("제품을 등록하시겠습니까?") == false) return;
+        let brand_name = $("#brand_name").attr("data-br-seq")
         let go_category = $("#go_category option:selected").val()
         let go_name = $("#go_name").val()
         let go_sub = $("#go_sub").val()
@@ -20,6 +21,7 @@ $(function(){
         
 
         let data = {
+            gi_bi_seq : brand_name,
             gi_gc_seq : go_category,
             gi_name : go_name,
             gi_sub : go_sub,
@@ -40,6 +42,8 @@ $(function(){
     })
     $("#cancel_go").click(function(){
         if(confirm("취소하시겠습니까?\n(입력된 정보는 저장되지 않습니다.")== false) return;
+        $("#brand_name").attr("data-br-seq","");
+        $("#brand_name").val("");
         $("#go_category").val("1").prop("selectd", true);
         $("#go_name").val("");
         $("#go_sub").val("");
@@ -76,6 +80,7 @@ $(function(){
             url:"/goods/get?seq="+$(this).attr("data-seq"),
             success:function(r) {
                 console.log(r);
+                // $("#brand_name").val(r.data.gi_bi_seq) - 브랜드명이 나오게
                 $("#go_category").val(r.data.gi_gc_seq).prop("selectd", true);
                 $("#go_name").val(r.data.gi_name);
                 $("#go_sub").val(r.data.gi_sub);
@@ -87,7 +92,7 @@ $(function(){
     $("#modify_go").click(function(){
         // alert(modify_data_seq);
         if(confirm("수정하시겠습니까?") == false) return;
-
+        // let brand_name = $("#brand_name").attr("data-br-seq")
         let go_category = $("#go_category option:selected").val()
         let go_name = $("#go_name").val()
         let go_sub = $("#go_sub").val()
@@ -97,6 +102,7 @@ $(function(){
 
         let data = {
             gi_seq : modify_data_seq,
+            // gi_bi_seq : brand_name,
             gi_gc_seq : go_category,
             gi_name : go_name,
             gi_sub : go_sub,
@@ -124,5 +130,43 @@ $(function(){
         if(e.keyCode == 13) {
             $("#search_btn").trigger("click");
         }
+    })
+    $("#search_br").click(function(){
+        $(".brand_search").css("display", "block")
+    })
+    $("#br_search_close").click(function(){
+        $(".brand_search").css("display", "")
+    })
+    $("#br_keyword").keyup(function(e){
+        if(e.keyCode == 13) $("#br_search_btn").trigger("click");
+    })
+    $("#br_search_btn").click(function(){
+        $.ajax({
+            url:"/goods/keyword?keyword="+$("#br_keyword").val(),
+            type:"get",
+            success:function(r) {
+                console.log(r);
+                $(".search_result ul").html("");
+                for(let i=0; i<r.list.length; i++) {
+                    let tag =
+                        '<li>'+
+                            '<a href="#" data-br-seq="'+r.list[i].bi_seq+'">'+r.list[i].bi_name+'</a>'+
+                        '</li>';
+                    $(".search_result ul").append(tag);
+                }
+                $(".search_result ul a").click(function(e){
+                    e.preventDefault(); // a 태그의 링크 기능 제거
+                    let seq = $(this).attr("data-br-seq");
+                    let name = $(this).html();
+
+                    $("#brand_name").attr("data-br-seq", seq);
+                    $("#brand_name").val(name);
+
+                    $(".search_result ul").html("");
+                    $("#br_keyword").val("");
+                    $(".brand_search").css("display", "");
+                })
+            }
+        })
     })
 })

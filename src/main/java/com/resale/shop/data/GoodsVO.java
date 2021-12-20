@@ -14,4 +14,6 @@ public class GoodsVO {
     private Integer gi_stock;
     private Date gi_reg_dt;
     private Date gi_mod_dt;
+    private String category_name;
+    private Integer gi_bi_seq;
 }
