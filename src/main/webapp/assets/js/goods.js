@@ -18,8 +18,12 @@ $(function(){
         let go_sub = $("#go_sub").val()
         let go_price = $("#go_price").val()
         let go_stock = $("#go_stock").val()
-        
 
+        if(brand_name == undefined) {
+            alert("브랜드를 입력하세요.");
+            return;
+        }
+        
         let data = {
             gi_bi_seq : brand_name,
             gi_gc_seq : go_category,
@@ -80,7 +84,8 @@ $(function(){
             url:"/goods/get?seq="+$(this).attr("data-seq"),
             success:function(r) {
                 console.log(r);
-                // $("#brand_name").val(r.data.gi_bi_seq) - 브랜드명이 나오게
+                $("#brand_name").attr("data-br-seq",r.data.gi_bi_seq);
+                $("#brand_name").val(r.data.brand_name);
                 $("#go_category").val(r.data.gi_gc_seq).prop("selectd", true);
                 $("#go_name").val(r.data.gi_name);
                 $("#go_sub").val(r.data.gi_sub);
@@ -92,7 +97,7 @@ $(function(){
     $("#modify_go").click(function(){
         // alert(modify_data_seq);
         if(confirm("수정하시겠습니까?") == false) return;
-        // let brand_name = $("#brand_name").attr("data-br-seq")
+        let brand_name = $("#brand_name").val()
         let go_category = $("#go_category option:selected").val()
         let go_name = $("#go_name").val()
         let go_sub = $("#go_sub").val()
@@ -102,7 +107,7 @@ $(function(){
 
         let data = {
             gi_seq : modify_data_seq,
-            // gi_bi_seq : brand_name,
+            gi_bi_seq : brand_name,
             gi_gc_seq : go_category,
             gi_name : go_name,
             gi_sub : go_sub,

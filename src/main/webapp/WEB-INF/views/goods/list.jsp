@@ -30,6 +30,7 @@
                         <tr>
                             <th>번호</th>
                             <th>카테고리</th>
+                            <th>브랜드</th>
                             <th>제품명</th>
                             <th>설명</th>
                             <th>가격</th>
@@ -49,6 +50,7 @@
                             <tr>
                                 <td>${g.gi_seq}</td>
                                 <td>${g.category_name}</td>
+                                <td>${g.brand_name}</td>
                                 <td>${g.gi_name}</td>
                                 <td>${g.gi_sub}</td>
                                 <td>${g.gi_price}</td>

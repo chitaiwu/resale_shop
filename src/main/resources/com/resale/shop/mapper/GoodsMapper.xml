@@ -4,12 +4,12 @@
 
 <mapper namespace="com.resale.shop.mapper.GoodsMapper">
     <select id="selectGoodsAll" resultType="com.resale.shop.data.GoodsVO">
-        select * from
-        (
-        select a.*, b.gc_name as category_name
-        from goods_info a left outer join goods_category b
-        on a.gi_gc_seq = b.gc_seq
-        ) c 
+        select
+        a.*, b.gc_name AS category_name, c.bi_name AS brand_name
+        FROM 
+        goods_info AS a
+        LEFT JOIN goods_category AS b ON a.gi_gc_seq = b.gc_seq
+        LEFT JOIN brand_info AS c ON a.gi_bi_seq = c.bi_seq 
         where gi_name like #{keyword}
         order by gi_seq desc
         limit 10 offset #{offset}
@@ -25,11 +25,22 @@
         delete from goods_info where gi_seq=#{seq}
     </delete>
     <select id="getGoodsInfoBySeq" resultType="com.resale.shop.data.GoodsVO">
-        select * from goods_info where gi_seq=#{seq}
+    select * from (
+        select
+            a.*,
+            b.gc_name AS gategory_name,
+            c.bi_name AS brand_name
+            FROM goods_info AS a
+            LEFT JOIN goods_category AS b
+            ON a.gi_gc_seq = b.gc_seq
+            LEFT JOIN brand_info AS c
+            ON a.gi_bi_seq = c.bi_seq
+    ) d
+    where gi_seq=#{seq}
     </select>
     <update id="updateGoods">
         update goods_info
-        set gi_bi_seq=#{gi_bi_seq},gi_gc_seq=#{gi_gc_seq}, gi_name=#{gi_name}, gi_sub=#{gi_sub},
+        set gi_bi_seq=#{gi_bi_seq}, gi_gc_seq=#{gi_gc_seq}, gi_name=#{gi_name}, gi_sub=#{gi_sub},
         gi_price=#{gi_price}, gi_stock=#{gi_stock}, gi_mod_dt=NOW()
         where gi_seq=#{gi_seq}
     </update>
