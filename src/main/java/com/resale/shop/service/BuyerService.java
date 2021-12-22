@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.resale.shop.data.BuyerHistoryVO;
 import com.resale.shop.data.BuyerVO;
 import com.resale.shop.mapper.BuyerMapper;
 import com.resale.shop.utils.AESAlgorithm;
@@ -80,6 +81,17 @@ public class BuyerService {
         mapper.addBuyerInfo(data);
         resultMap.put("status", true);
         resultMap.put("message", "고객 정보가 추가되었습니다.");
+        
+        // 가장 최근에 추가된 고객의 seq 번호 가져오기
+        Integer seq = mapper.getRecentAddBuyerSeq();
+        // add 동작에 대한 History 추가
+        BuyerHistoryVO history = new BuyerHistoryVO();
+        history.setBh_bi_seq(seq);
+        history.setBh_type("new");
+        String content = data.getBi_name()+"|"+data.getBi_id()+"|"+data.getBi_birth()+"|"+data.getBi_gender()+"|"+data.getBi_phone();
+        history.setBh_content(content);
+        mapper.insertBuyerHistory(history);
+        
         return resultMap;
     }
     public Map<String, Object> deleteBuyer(Integer seq) {
@@ -87,6 +99,14 @@ public class BuyerService {
         mapper.deleteBuyer(seq);
         resultMap.put("status", true);
         resultMap.put("message", "고객 정보가 삭제되었습니다.");
+
+        BuyerHistoryVO history = new BuyerHistoryVO();
+        history.setBh_bi_seq(seq);
+        history.setBh_type("delete");
+        // String content = data.getDi_name()+" | "+data.getDi_graduate_score()+" | "+data.getDi_status();
+        // history.setDeph_content(content);
+        mapper.insertBuyerHistory(history);
+
         return resultMap;
     }
     public Map<String, Object> getBuyerInfoBySeq(Integer seq) {
@@ -101,6 +121,13 @@ public class BuyerService {
         mapper.updateBuyer(data);
         resultMap.put("status", true);
         resultMap.put("message", "수정되었습니다.");
+
+        BuyerHistoryVO history = new BuyerHistoryVO();
+        history.setBh_bi_seq(data.getBi_seq());
+        history.setBh_type("update");
+        String content = data.getBi_name()+"|"+data.getBi_id()+"|"+data.getBi_birth()+"|"+data.getBi_gender()+"|"+data.getBi_phone();
+        history.setBh_content(content);
+        mapper.insertBuyerHistory(history);
 
         return resultMap;
     }

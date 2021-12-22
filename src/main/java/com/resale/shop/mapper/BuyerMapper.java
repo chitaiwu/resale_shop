@@ -2,6 +2,7 @@ package com.resale.shop.mapper;
 
 import java.util.List;
 
+import com.resale.shop.data.BuyerHistoryVO;
 import com.resale.shop.data.BuyerVO;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -16,4 +17,7 @@ public interface BuyerMapper {
 
     public BuyerVO getBuyerInfoBySeq(Integer seq);
     public void updateBuyer(BuyerVO data);
+
+    public void insertBuyerHistory(BuyerHistoryVO data);
+    public Integer getRecentAddBuyerSeq();
 }

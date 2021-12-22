@@ -23,12 +23,6 @@
         <div class="content_area">
             <div class="menu_area">
                 <div class="search_box">
-                    <!-- <select id="search_type">
-                        <option value="brand">브랜드</option>
-                        <option value="name"
-                            <c:if test="${data.type=='name'}">selected</c:if>
-                        >제품명</option>
-                    </select> -->
                     <input type="text" id="keyword" placeholder="이름 검색" value="${data.keyword}">
                     <button id="search_btn"><i class="fas fa-search"></i></button>
                 </div>

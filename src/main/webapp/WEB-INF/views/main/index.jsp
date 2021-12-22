@@ -14,7 +14,6 @@
 <body>
     <%@include file="/WEB-INF/includes/header.jsp"%>
     <main>
-        ${update}
         <h1>쇼핑몰 관리 대시보드 (Shop Management Dashboard)</h1>
         <div class="content_area">
             <div class="goods_info">

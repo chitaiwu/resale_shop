@@ -30,4 +30,13 @@
         bi_email=#{bi_email}, bi_grade=#{bi_grade}, bi_status=#{bi_status}, bi_mod_dt=NOW()
         where bi_seq=#{bi_seq}
     </update>
+    <insert id="insertBuyerHistory">
+        insert into buyer_history
+        (bh_bi_seq, bh_type, bh_content)
+        values
+        (#{bh_bi_seq}, #{bh_type}, #{bh_content})
+    </insert>
+    <select id="getRecentAddBuyerSeq" resultType="java.lang.Integer">
+        select bi_seq from buyer_info order by bi_seq desc limit 1
+    </select>
 </mapper>
