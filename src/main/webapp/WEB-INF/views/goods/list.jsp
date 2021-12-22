@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,12 @@
         <div class="content_area">
             <div class="menu_area">
                 <div class="search_box">
+                    <select id="search_type">
+                        <option value="brand">브랜드</option>
+                        <option value="name"
+                            <c:if test="${data.type=='name'}">selected</c:if>
+                        >제품명</option>
+                    </select>
                     <input type="text" id="keyword" placeholder="검색어 입력" value="${data.keyword}">
                     <button id="search_btn"><i class="fas fa-search"></i></button>
                 </div>
@@ -43,7 +50,7 @@
                     <tbody>
                         <c:if test="${data.total == 0}">
                             <tr>
-                                <td id="nadata" colspan="6">데이터가 없습니다.</td>
+                                <td id="nadata" colspan="10">데이터가 없습니다.</td>
                             </tr>
                         </c:if>
                         <c:forEach items="${data.list}" var="g">
@@ -55,8 +62,8 @@
                                 <td>${g.gi_sub}</td>
                                 <td>${g.gi_price}</td>
                                 <td>${g.gi_stock}</td>
-                                <td>${g.gi_reg_dt}</td>
-                                <td>${g.gi_mod_dt}</td>
+                                <td><fmt:formatDate value="${g.gi_reg_dt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td><fmt:formatDate value="${g.gi_mod_dt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>
                                     <button class="modify_btn" data-seq="${g.gi_seq}"><i class="fas fa-pencil-alt"></i></button>
                                     <button class="delete_btn" data-seq="${g.gi_seq}"><i class="fas fa-minus-circle"></i></button>

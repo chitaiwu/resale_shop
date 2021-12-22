@@ -1,7 +1,5 @@
 package com.resale.shop.controller;
 
-import java.util.Map;
-
 import com.resale.shop.service.GoodsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GoodsController {
     @Autowired GoodsService service;
     @GetMapping("/goods")
-    public String getGoods(
-        Model model, @RequestParam @Nullable Integer offset,
-        @RequestParam @Nullable String keyword
+    public String getGoods(Model model,
+        @RequestParam @Nullable String type,
+        @RequestParam @Nullable String keyword,
+        @RequestParam @Nullable Integer offset
+        
     ) {
-        Map<String, Object> resultMap = service.getGoodsList(offset, keyword);
-        model.addAttribute("data", resultMap);
+        model.addAttribute("data", service.getGoodsList(type, keyword, offset));
         return "/goods/list";
     }
 }

@@ -4,18 +4,40 @@
 
 <mapper namespace="com.resale.shop.mapper.GoodsMapper">
     <select id="selectGoodsAll" resultType="com.resale.shop.data.GoodsVO">
-        select
-        a.*, b.gc_name AS category_name, c.bi_name AS brand_name
-        FROM 
-        goods_info AS a
-        LEFT JOIN goods_category AS b ON a.gi_gc_seq = b.gc_seq
-        LEFT JOIN brand_info AS c ON a.gi_bi_seq = c.bi_seq 
-        where gi_name like #{keyword}
+        select * from
+        (
+            select
+            a.*, b.gc_name AS category_name, c.bi_name AS brand_name
+            FROM 
+            goods_info AS a
+            LEFT JOIN goods_category AS b ON a.gi_gc_seq = b.gc_seq
+            LEFT JOIN brand_info AS c ON a.gi_bi_seq = c.bi_seq 
+        ) d
+        <if test="type == 'brand'">
+            where brand_name like #{keyword}
+        </if>
+        <if test="type == 'name'">
+            where gi_name like #{keyword}
+        </if>
         order by gi_seq desc
         limit 10 offset #{offset}
     </select>
     <select id="getGoodsCount" resultType="java.lang.Integer">
-        select count(*) from goods_info where gi_name like #{keyword}
+        select count(*) from
+        (
+            select
+            a.*, b.gc_name AS category_name, c.bi_name AS brand_name
+            FROM 
+            goods_info AS a
+            LEFT JOIN goods_category AS b ON a.gi_gc_seq = b.gc_seq
+            LEFT JOIN brand_info AS c ON a.gi_bi_seq = c.bi_seq
+        ) d
+        <if test="type == 'brand'">
+            where brand_name like #{keyword}
+        </if>
+        <if test="type == 'name'">
+            where gi_name like #{keyword}
+        </if>
     </select>
     <insert id="addGoods">
         insert into goods_info(gi_bi_seq, gi_gc_seq, gi_name, gi_sub, gi_price, gi_stock)
@@ -24,6 +46,10 @@
     <delete id="deleteGoods">
         delete from goods_info where gi_seq=#{seq}
     </delete>
+    <!-- seq가 없는 것도 정상 실행되는 것 방지 -->
+    <select id="isExistGoods" resultType="java.lang.Integer">
+        select count(*) from goods_info where gi_seq = #{seq}
+    </select>
     <select id="getGoodsInfoBySeq" resultType="com.resale.shop.data.GoodsVO">
     select * from (
         select

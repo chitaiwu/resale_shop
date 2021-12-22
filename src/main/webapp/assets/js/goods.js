@@ -127,7 +127,10 @@ $(function(){
     })
     // 조회 기능
     $("#search_btn").click(function(){
-        location.href="/goods?keyword="+$("#keyword").val();
+        let type = $("#search_type option:selected").val();
+        let keyword = $("#keyword").val();
+
+        location.href="/goods?type="+type+"&keyword="+keyword;
     })
     // 엔터키에 조회기능 부여
     $("#keyword").keydown(function(e){

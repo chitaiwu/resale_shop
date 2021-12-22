@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resale.shop.mapper.BuyerMapper">
+    <select id="getBuyerInfo" resultType="com.resale.shop.data.BuyerVO">
+        select * from buyer_info where bi_name like #{keyword}
+        order by bi_seq desc
+        limit 10 offset #{offset}
+    </select>
+    <select id="getBuyerCount" resultType="java.lang.Integer">
+        select count(*) from buyer_info where bi_name like #{keyword}
+    </select>
+    <insert id="addBuyerInfo">
+        insert into mall_db.buyer_info
+        (bi_seq, bi_id, bi_pwd, bi_name, bi_birth, bi_gender, bi_address, bi_phone, bi_email, bi_grade, bi_status)
+        values
+        (#{bi_seq}, #{bi_id}, #{bi_pwd}, #{bi_name}, #{bi_birth}, #{bi_gender}, #{bi_address}, #{bi_phone}, #{bi_email}, #{bi_grade}, #{bi_status})
+    </insert>
+    <delete id="deleteBuyer">
+        delete from buyer_info where bi_seq=#{seq}
+    </delete>
+    <select id="getBuyerInfoBySeq" resultType="com.resale.shop.data.BuyerVO">
+        select * from buyer_info where bi_seq=#{seq}
+    </select>
+    <update id="updateBuyer">
+        update buyer_info
+        set bi_name=#{bi_name}, bi_id=#{bi_id}, bi_birth=#{bi_birth},
+        bi_gender=#{bi_gender}, bi_address=#{bi_address}, bi_phone=#{bi_phone},
+        bi_email=#{bi_email}, bi_grade=#{bi_grade}, bi_status=#{bi_status}, bi_mod_dt=NOW()
+        where bi_seq=#{bi_seq}
+    </update>
+</mapper>

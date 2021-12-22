@@ -6,6 +6,7 @@ import com.resale.shop.data.GoodsVO;
 import com.resale.shop.service.GoodsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class GoodsAPIController {
         return service.addGoods(data);
     }
     @DeleteMapping("/goods/delete")
-    public Map<String, Object> deletGoods(@RequestParam Integer seq) {
+    public ResponseEntity<Map<String, Object>> deletGoods(@RequestParam Integer seq) {
         return service.deleteGoods(seq);
     }
     @GetMapping("/goods/get")

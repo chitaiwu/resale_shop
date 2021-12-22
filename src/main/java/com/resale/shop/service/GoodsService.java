@@ -10,29 +10,34 @@ import com.resale.shop.data.GoodsVO;
 import com.resale.shop.mapper.GoodsMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GoodsService {
     @Autowired GoodsMapper mapper;
 
-    public Map<String, Object> getGoodsList(Integer offset, String keyword) {
+    public Map<String, Object> getGoodsList(String type, String keyword, Integer offset) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        if(offset == null) {
-            offset = 0;
-            resultMap.put("offset",offset);
-        }
         if(keyword == null) {
+            resultMap.put("keyword",keyword);
             keyword = "%%";
-            resultMap.put("keyword","");
         }
         else {
             resultMap.put("keyword",keyword);
             keyword = "%"+keyword+"%";
         }
-        List<GoodsVO> list = mapper.selectGoodsAll(offset, keyword);
+        resultMap.put("type", type);
 
-        Integer cnt = mapper.getGoodsCount(keyword);
+        if(offset == null) {
+            offset = 0;
+            resultMap.put("offset",offset);
+        }
+        
+        List<GoodsVO> list = mapper.selectGoodsAll(type, keyword, offset);
+        Integer cnt = mapper.getGoodsCount(type, keyword);
+
         Integer page_cnt = cnt  / 10 ;
         if(cnt % 10 > 0 ) page_cnt++;
 
@@ -77,20 +82,27 @@ public class GoodsService {
 
         return resultMap;
     }
-    public Map<String, Object> deleteGoods(Integer seq) {
+    public ResponseEntity<Map<String, Object>> deleteGoods(Integer seq) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        mapper.deleteGoods(seq);
-        resultMap.put("status", true);
-        resultMap.put("message", "제품이 삭제되었습니다.");
+        Integer cnt = mapper.isExistGoods(seq);
+        if(cnt == 0) {
+            resultMap.put("status", false);
+            resultMap.put("message", "삭제에 실패했습니다.(존재하지 않는 제품 정보)");
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        else {
+            mapper.deleteGoods(seq);
+            resultMap.put("status", true);
+            resultMap.put("message", "제품이 삭제되었습니다.");
 
-        GoodsHistoryVO history = new GoodsHistoryVO();
-        history.setGoh_gi_seq(seq);
-        history.setGoh_type("delete");
-        // String content = data.getGi_gc_seq()+"|"+data.getGi_name()+"|"+data.getGi_price()+"|"+data.getGi_stock();
-        // history.setGoh_content(content);
-        mapper.insertGoodsHistory(history);
-        
-        return resultMap;
+            GoodsHistoryVO history = new GoodsHistoryVO();
+            history.setGoh_type("delete");
+            history.setGoh_gi_seq(seq);
+            // String content = data.getGi_gc_seq()+"|"+data.getGi_name()+"|"+data.getGi_price()+"|"+data.getGi_stock();
+            // history.setGoh_content(content);
+            mapper.insertGoodsHistory(history);
+            return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+        }
     }
     public Map<String, Object> getGoodsInfoBySeq(Integer seq) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();

@@ -1,5 +1,7 @@
 package com.resale.shop.mapper;
 
+import java.util.Date;
+
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -14,4 +16,6 @@ public interface DashboardMapper {
     public Integer getNormalCustomercnt();
 
     public Integer getTotalReviewcnt();
+
+    public Date getGoodsUpdateDate();
 }

@@ -38,4 +38,11 @@ public class DashboardService {
         map.put("review", reviewCntList);
         return map;
     }
+    public Map<String, Object> getUpdateDate() {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+
+        resultMap.put("goods_date", mapper.getGoodsUpdateDate());
+
+        return resultMap;
+    }
 }

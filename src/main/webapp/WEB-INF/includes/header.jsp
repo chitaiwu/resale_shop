@@ -27,9 +27,8 @@
             <div class="main_menu">
                 <a href="/"><i class="fas fa-columns"></i> 대시보드</a>
                 <a href="/goods"><i class="fas fa-shopping-bag"></i>제품 관리</a>
-                <a href="#"><i class="fas fa-id-card-alt"></i>고객 관리</a>
+                <a href="/customer"><i class="fas fa-id-card-alt"></i>고객 관리</a>
                 <a href="#"><i class="fas fa-comments"></i>후기 관리</a>
-                <a href="#"><i class=""></i>셀러 관리</a>
             </div>
         </div>
     </header>

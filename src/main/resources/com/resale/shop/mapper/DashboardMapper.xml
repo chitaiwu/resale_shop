@@ -27,4 +27,7 @@
     <select id="getTotalReviewcnt" resultType="java.lang.Integer">
         select count(*) from goods_review
     </select>
+    <select id="getGoodsUpdateDate" resultType="java.util.Date">
+        select goh_reg_dt from goods_history order by goh_reg_dt desc limit 1
+    </select>
 </mapper>
